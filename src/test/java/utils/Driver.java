@@ -50,6 +50,7 @@ public class Driver {
             }
             if(!ConfigReader.getProperty("browser").equals("headless")){
                 driver.manage().window().maximize();
+                driver.manage().timeouts().pageLoadTimeout(Long.parseLong(ConfigReader.getProperty("pageWait")), TimeUnit.SECONDS);
                 driver.manage().timeouts().implicitlyWait(Long.parseLong(ConfigReader.getProperty("implicitWait")), TimeUnit.SECONDS);
             }
         }

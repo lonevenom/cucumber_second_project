@@ -25,14 +25,14 @@ public class WebOrdersHomePage {
     @FindBy (css = ".btnDeleteSelected")
     public WebElement deleteSelectedButton;
 
-    @FindBy (css = ".SampleTable tr>td:first-child")
+    @FindBy (css = ".SampleTable tr>td:first-child>input")
     public List<WebElement> checkBoxes;
     //8 items (contains all 8 check boxes - I want to loop through ea. one to check if checked/unchecked)
 
     @FindBy (css = "table[class='SampleTable'] tr:nth-child(2)")
     public WebElement firstOrderInTable;
 
-    @FindBy (css = "table[class='SampleTable']")
+    @FindBy (css = "table[class='SampleTable']>tbody")
     public WebElement orderTable;
 
     @FindBy (css = "table[class='SampleTable'] tr:nth-child(2)>td")

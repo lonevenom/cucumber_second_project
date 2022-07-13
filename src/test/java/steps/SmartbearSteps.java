@@ -15,6 +15,7 @@ import pages.OrderPage;
 import pages.WebOrdersHomePage;
 import utils.Driver;
 import utils.DropdownHandler;
+import utils.GetRandomNumber;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -27,6 +28,7 @@ public class SmartbearSteps {
     OrderPage orderPage;
     Faker faker;
     BaseSteps baseSteps;
+    GetRandomNumber getRandomNumber;
 
     @Before
     public void setup() {
@@ -36,6 +38,7 @@ public class SmartbearSteps {
         orderPage = new OrderPage();
         faker = new Faker();
         baseSteps = new BaseSteps();
+        getRandomNumber = new GetRandomNumber();
     }
 
     @Then("user should see {string} Message")
@@ -67,13 +70,13 @@ public class SmartbearSteps {
         switch (text) {
             case "checked":
                 for (int i = 0; i < webOrdersHomePage.checkBoxes.size(); i++) {
-                    Assert.assertTrue(webOrdersHomePage.checkBoxes.get(i).isDisplayed());
+  //                  Assert.assertTrue(webOrdersHomePage.checkBoxes.get(i).isDisplayed());
                     Assert.assertTrue(webOrdersHomePage.checkBoxes.get(i).isSelected());
                 }
                 break;
             case "unchecked":
                 for (int i = 0; i < webOrdersHomePage.checkBoxes.size(); i++) {
-                    Assert.assertTrue(webOrdersHomePage.checkBoxes.get(i).isDisplayed());
+               //     Assert.assertTrue(webOrdersHomePage.checkBoxes.get(i).isDisplayed());
                     Assert.assertFalse(webOrdersHomePage.checkBoxes.get(i).isSelected());
                 }
                 break;
@@ -120,14 +123,13 @@ public class SmartbearSteps {
 
     @And("user enters all payment information")
     public void userEntersAllPaymentInformation() {
-        //generates a random number to click on a random radio box for card type
-        int randomRadioIndex = (int) ((Math.random() * (4 - 1)) + 1);
+        //method from getRandomNumber class generates a random number to click on a random radio box for card type
         //loops through card type options to make sure they are all enabled
         for (int i = 0; i < orderPage.cardTypeOptionsRadioFields.size(); i++) {
             orderPage.cardTypeOptionsRadioFields.get(i).isEnabled();
         }
         //clicks on a random card type radio field option using the random variable above.
-        orderPage.cardTypeOptionsRadioFields.get(randomRadioIndex).click();
+        orderPage.cardTypeOptionsRadioFields.get(GetRandomNumber.getRandoNumba()).click();
 
         orderPage.cardNumberInputBox.isEnabled();
         orderPage.cardNumberInputBox.sendKeys(faker.business().creditCardNumber());
@@ -164,19 +166,15 @@ public class SmartbearSteps {
     @Then("validate all orders are deleted from the {string}")
     public void validateAllOrdersAreDeletedFromThe(String text) {
         if ("List of All Orders".equals(text)) {
-            try {
-                Assert.assertFalse(webOrdersHomePage.orderTable.isDisplayed());
-            } catch (NoSuchElementException e) {
-                Assert.assertTrue(true);
-            }
-        } else {
-            throw new NotFoundException("The table is not defined properly in the feature file!!!");
+                Assert.assertNotNull(webOrdersHomePage.orderTable);
         }
+
     }
 
     @And("validate user sees {string} Message")
     public void validateUserSeesMessage(String text) {
         webOrdersHomePage.messageAfterOrdersHaveBeenDeleted.isDisplayed();
+        Assert.assertEquals(text, webOrdersHomePage.messageAfterOrdersHaveBeenDeleted.getText());
     }
 }
 
